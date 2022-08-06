@@ -1,5 +1,5 @@
-mod word_tree;
-mod util;
+pub mod word_tree;
+pub mod util;
 
 use crate::word_tree::WordTree;
 
