@@ -1,5 +1,5 @@
 #[derive(Clone, PartialEq)]
-pub(crate) enum WordElement {
+pub enum WordElement {
     BeginWord,
     Letter(char),
     EndWord

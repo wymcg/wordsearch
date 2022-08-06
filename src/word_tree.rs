@@ -13,6 +13,7 @@ impl WordTree {
         Self { root: Leaf::new(WordElement::BeginWord) }
     }
 
+    // add word to tree
     pub fn insert(&mut self, new_word: &str) {
         let mut curr_node = &mut self.root;
         for letter in new_word.chars() {
@@ -23,6 +24,7 @@ impl WordTree {
         curr_node.navigate_to(WordElement::EndWord);
     }
 
+    // check if a word is present in the tree
     pub fn search(&self, word: &str) -> bool {
         let mut curr_node = &self.root;
 
@@ -51,5 +53,32 @@ impl WordTree {
             None => {false}
             Some(_) => {true}
         }
+    }
+
+    // suggest WordElements to follow an input string which could possibly produce a valid word
+    pub fn suggest(&self, base: &str) -> Option<Vec<WordElement>> {
+        let mut suggestions = Vec::<WordElement>::new();
+
+        let mut curr_node = &self.root;
+
+        // traverse to the target node
+        for letter in base.chars() {
+            match curr_node.find_child_index(WordElement::Letter(letter)) {
+                None => {
+                    // this base string isn't valid!
+                    return None;
+                }
+                Some(idx) => {
+                    curr_node = &curr_node.children[idx];
+                }
+            }
+        }
+
+        // at this point, curr_node's children have all valid suggestions
+        for child_node in &curr_node.children {
+            suggestions.push(child_node.data.clone());
+        }
+
+        return Some(suggestions);
     }
 }
