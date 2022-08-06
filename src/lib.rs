@@ -7,6 +7,7 @@ mod tests {
     use std::io::{BufRead, BufReader};
     use crate::util::build_tree_from_file;
     use crate::word_tree::WordTree;
+    use crate::word_tree::elements::WordElement;
 
     #[test]
     fn insert_test() {
@@ -54,6 +55,36 @@ mod tests {
                 word
             );
         }
+    }
+
+    #[test]
+    fn suggest_test() {
+        // fill dictionary
+        let dictionary = vec![
+            "but",
+            "butt",
+            "bun",
+            "abs",
+            "absolute"
+        ];
+
+        // make and build tree
+        let mut tree = WordTree::new();
+        for word in dictionary {
+            tree.insert(word);
+        }
+
+        // get and check suggestions
+        let bu_expect = vec![WordElement::Letter('t'), WordElement::Letter('n')];
+        let abs_expect = vec![WordElement::EndWord, WordElement::Letter('o')];
+
+        let bu_suggestions = tree.suggest("bu");
+        let abs_suggestions = tree.suggest("abs");
+        let x_suggestions = tree.suggest("x");
+
+        assert!(bu_suggestions == Some(bu_expect));
+        assert!(abs_suggestions == Some(abs_expect));
+        assert!(x_suggestions == None);
     }
 
     #[test]

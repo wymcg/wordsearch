@@ -1,4 +1,4 @@
-mod elements;
+pub mod elements;
 mod node;
 
 use crate::word_tree::elements::WordElement;
