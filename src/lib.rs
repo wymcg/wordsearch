@@ -1,14 +1,12 @@
 pub mod word_tree;
 pub mod util;
 
-use crate::word_tree::WordTree;
-
 #[cfg(test)]
 mod tests {
     use std::fs::File;
     use std::io::{BufRead, BufReader};
     use crate::util::build_tree_from_file;
-    use crate::WordTree;
+    use crate::word_tree::WordTree;
 
     #[test]
     fn insert_test() {
