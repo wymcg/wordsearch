@@ -23,8 +23,8 @@ impl WordTree {
         curr_node.navigate_to(WordElement::EndWord);
     }
 
-    pub fn search(&mut self, word: &str) -> bool {
-        let mut curr_node = &mut self.root;
+    pub fn search(&self, word: &str) -> bool {
+        let mut curr_node = &self.root;
 
         // traverse the tree letter by letter
         for letter in word.chars() {
@@ -36,7 +36,7 @@ impl WordTree {
                 }
                 Some(idx) => {
                     // letter is a child of the current node, so go to that node
-                    curr_node = &mut curr_node.children[idx];
+                    curr_node = &curr_node.children[idx];
                 }
             }
         }

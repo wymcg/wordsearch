@@ -73,7 +73,7 @@ mod tests {
     }
 
     fn test_with_wordlist(filename: &str) {
-        let mut tree = build_tree_from_file(filename);
+        let tree = build_tree_from_file(filename);
 
         let file = File::open(filename).unwrap();
         let reader = BufReader::new(file);
