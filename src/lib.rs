@@ -88,6 +88,34 @@ mod tests {
     }
 
     #[test]
+    fn get_words_of_length_test() {
+        let dictionary = [
+            "r",
+            "rust",
+            "java",
+            "javascript",
+            "jquery",
+            "typescript",
+            "c",
+            "c++",
+            "go",
+            "python",
+            "perl",
+        ];
+
+        let mut tree = WordTree::new();
+
+        for word in dictionary {
+            tree.insert(word);
+        }
+
+        let words = tree.find_words_of_length(4);
+
+        assert_eq!(words, vec!["rust", "java", "perl"]);
+
+    }
+
+    #[test]
     fn build_tree_from_file_test() {
         let filename = "C:\\Users\\wille\\IdeaProjects\\wordsearch\\word_lists\\mostcommon1000.txt";
 
@@ -111,4 +139,5 @@ mod tests {
             assert!(tree.search(&line.unwrap()));
         }
     }
+
 }

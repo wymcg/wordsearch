@@ -2,7 +2,7 @@ pub mod elements;
 mod node;
 
 use crate::word_tree::elements::WordElement;
-use crate::word_tree::node::Node as Leaf;
+use crate::word_tree::node::{Node as Leaf, Node};
 
 pub struct WordTree {
     root: Leaf<WordElement>
@@ -80,5 +80,48 @@ impl WordTree {
         }
 
         return Some(suggestions);
+    }
+
+    pub fn find_words_of_length(&self, n: u32) -> Vec<String> {
+        self.find_words_of_length_helper(&self.root, n + 1) // n + 1 to include EndWord
+    }
+
+    fn find_words_of_length_helper(&self, start_node: &Node<WordElement>, n: u32) -> Vec<String> {
+        let mut my_words = Vec::<String>::new();
+        let my_char = &start_node.data;
+
+        match my_char {
+            WordElement::BeginWord => { // we are at the root node!
+                if n > 0 {
+                    for node in &start_node.children {
+                        let node_words = self.find_words_of_length_helper(node, n - 1);
+                        for word in node_words {
+                            my_words.push(word);
+                        }
+                    }
+                }
+            }
+            WordElement::Letter(letter) => {
+                if n > 0 {
+                    for node in &start_node.children {
+                        let node_partials = self.find_words_of_length_helper(node, n - 1);
+                        for partial in node_partials {
+                            let mut new_partial = letter.to_string();
+                            new_partial.push_str(&*partial);
+                            my_words.push(new_partial);
+                        }
+                    }
+                }
+            }
+            WordElement::EndWord => {
+                if n == 0 {
+                    my_words.push(String::new());
+                }
+            }
+        }
+
+        return my_words;
+
+
     }
 }
